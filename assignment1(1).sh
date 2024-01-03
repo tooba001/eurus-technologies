@@ -1,11 +1,11 @@
-#bash script to setup a wordpress in a single virtual machine
+ #bash script to setup a wordpress in a single virtual machine
 #!/bin/bash
 sudo apt-get install apache2
 sudo apt-get install mysql-server -y
 sudo mysql_secure_installation
 sudo mysql -e "CREATE DATABASE newdatabase;"
-sudo mysql -e "CREATE USER 'toobaa'@'localhost' IDENTIFIED BY 'tooba2001';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON newdatabase.* TO 'toobaa'@'localhost';"
+sudo mysql -e "CREATE USER 'toobaa'@'%' IDENTIFIED BY 'tooba2001@A!';"
+sudo mysql -e "GRANT ALL PRIVILEGES ON newdatabase.* TO 'toobaa'@'%';"
 sudo mysql -e "FLUSH PRIVILEGES;"
 sudo apt install php -y
 sudo apt install php-mysql php-cgi php-cli php-gd -y
