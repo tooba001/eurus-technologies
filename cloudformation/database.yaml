@@ -219,7 +219,7 @@ Outputs:
     Value: !Ref PrivateSubnetB
   mySecurityGroup:
     Description: my security group
-    Value: !Ref InstanceSecurityGroup
+    Value: !Ref databaseSecurityGroup
   wordpressdatabase:
     Description: wordpress database
     Value: !Ref WordPressDB
