@@ -1,0 +1,30 @@
+Resources:
+  vpcstack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:  https://tooba-bucket.s3.amazonaws.com/vpc.yaml
+  databasestack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:  https://tooba-bucket.s3.amazonaws.com/database.yaml
+      Parameters:
+        Myvpc: !GetAtt vpcstack.Outputs.Myvpc
+        PublicSubnetA: !GetAtt vpcstack.Outputs.PublicSubnetA
+        PublicSubnetB: !GetAtt vpcstack.Outputs.PublicSubnetB
+        PrivateSubnetA: !GetAtt vpcstack.Outputs.PrivateSubnetA
+        PrivateSubnetB: !GetAtt vpcstack.Outputs.PrivateSubnetB
+  webserverstack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:  https://tooba-bucket.s3.amazonaws.com/webserver.yaml
+      Parameters:
+        Myvpc: !GetAtt vpcstack.Outputs.Myvpc
+        RdsEndpoint: !GetAtt databasestack.Outputs.RdsEndpoint
+        PublicSubnetA: !GetAtt vpcstack.Outputs.PublicSubnetA
+        PublicSubnetB: !GetAtt vpcstack.Outputs.PublicSubnetB
+        PrivateSubnetA: !GetAtt vpcstack.Outputs.PrivateSubnetA
+        PrivateSubnetB: !GetAtt vpcstack.Outputs.PrivateSubnetB
+        webservergroup: !GetAtt databasestack.Outputs.webservergroup
+        loadbalancersecuritygroup: !GetAtt databasestack.Outputs.loadbalancersecuritygroup
+       
+        
