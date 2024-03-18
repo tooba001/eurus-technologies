@@ -1,0 +1,10 @@
+# Run a docker compose configuration file
+docker-compose -f docker1.yml up -d
+# Bring an nginx container, and mount your own directory of statics file, and make it available at port 80
+sudo docker run -d -p 8080:80 -v ~/docker1.yml/static-files:/usr/share/nginx/html nginx
+#build image
+docker docker build -t docker-with-docker .
+# share docker container with docker daemon
+docker run -v /var/run/docker.sock:/var/run/docker.sock -d --name docker-container docker-with-docker
+#run a container within a container
+docker exec -it docker-container docker run -it alpine sh
