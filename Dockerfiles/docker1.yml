@@ -1,3 +1,4 @@
+# Question :Bring an nginx container, and mount your own directory of statics file, and make it available at port 80
 services:
   nginx:
     image: nginx
