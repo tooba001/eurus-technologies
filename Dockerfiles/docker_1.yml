@@ -1,0 +1,15 @@
+
+services:
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=tooba
+      - MONGO_INITDB_ROOT_PASSWORD=tooba2001
+      - MONGO_INITDB_DATABASE=mydatabase
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
