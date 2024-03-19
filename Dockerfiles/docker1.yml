@@ -1,8 +1,0 @@
-# Question :Bring an nginx container, and mount your own directory of statics file, and make it available at port 80
-services:
-  nginx:
-    image: nginx
-    ports:
-      - "8080:80"
-    volumes:
-      - ./static_files:/usr/share/nginx/html:ro
