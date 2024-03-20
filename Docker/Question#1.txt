@@ -1,1 +1,0 @@
-  Question1# Bring up a mongodb container and set your own credentials via environment variables.
