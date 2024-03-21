@@ -1,0 +1,11 @@
+ERROR:  docker: Error response from daemon: Conflict. The container name "/test1" is already in use by container "3351edd9c7149cc42aba9c85aee2ce4db6d9f92aeeafed3f5f2128aecf305eeb". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+
+#  Why does this not work?
+ Answer:  Because multiple docker containers cannot same. test1 container name is already in used.  Docker does not allow multiple containers to have the same name, as it uses container names to uniquely identify containers.
+
+
+# What can you do to make them both run (there are at least a couple of ways)?
+Answer :  
+ a)  i can change change container name . like i can used "test2" container name in second command  like docker run -it --name=test2 alpine:latest date.   "OR"
+ b)  i  can remove existing container so that i can use same container name in second command.
