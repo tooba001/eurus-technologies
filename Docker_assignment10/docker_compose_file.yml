@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  delayed_service:
+    build: ./delayed_service
+    restart: on-failure
+    depends_on:
+      - delay_service
+    healthcheck:
+      test: ["CMD-SHELL", "sleep 30s && exit 0"]
+      interval: 1s
+      timeout: 10s
+      retries: 5
+
+  delay_service:
+    image: alpine
+    command: ["sh", "-c", "sleep 60s"]
+
