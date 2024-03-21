@@ -1,0 +1,7 @@
+# Run command
+
+ sudo docker cp /Desktop/docker_within_docker/Dockerfile  f68579e1e67a : /app/Dockerfile
+
+# Access to container and check that file exist or not
+
+ sudo docker exec f68579e1e67a  sh -c 'echo "Contents of the file" > Dockerfile'
