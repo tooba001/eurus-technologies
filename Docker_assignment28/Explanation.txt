@@ -1,0 +1,9 @@
+
+ #  What ways can you think of to do this?
+ 
+  Define a service in a docker-compose.yml file and specify deploy.replicas: 1
+  
+  # use this command to run docker-compose file
+  
+    sudo docker-compose build
+
