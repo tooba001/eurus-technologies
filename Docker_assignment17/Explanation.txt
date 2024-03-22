@@ -1,0 +1,5 @@
+#  Do you see the same metadata files from the previous exercise?
+#Answer
+
+  bin  dev  etc  home  lib  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+NO, i saw these files in this exercise. 
