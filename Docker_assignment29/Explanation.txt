@@ -1,0 +1,9 @@
+  
+    I am using PID Namespace Isolation
+    
+  Utilize PID (Process ID) namespace isolation to restrict processes within the container from seeing or interacting with processes outside of its namespace. This effectively prevents processes in the container from forking other processes outside of its namespace. You can achieve this by running the container with the --pid option set to host
+  
+  # USE THIS COMMAND
+  
+  sudo  docker run --pid=host my-container
+
