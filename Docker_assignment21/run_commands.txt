@@ -1,0 +1,7 @@
+ # build image 
+  
+   sudo docker build -t my-image .
+  
+ # verify images
+ 
+   sudo docker images
