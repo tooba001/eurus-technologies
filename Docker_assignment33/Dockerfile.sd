@@ -1,0 +1,3 @@
+FROM alpine:latest
+RUN apk add --no-cache sed
+CMD ["sed", "-n", "s/this/that/p"]
