@@ -1,0 +1,26 @@
+#  create ping. sh file 
+
+  touch ping.sh
+  
+# create pong.sh file
+
+  touch pong.sh
+  
+# create dockerfiles and then build images 
+
+  sudo docker build -t ping-container -f Dockerfile.ping .
+  sudo docker build -t pong-container -f Dockerfile.pong .
+
+# run containers
+
+ sudo  docker run -d --name ping ping-container
+ sudo docker run -d --name pong pong-container
+
+# check ping pong messages
+
+
+  sudo docker logs -f ping
+  sudo docker logs -f pong
+
+
+  
