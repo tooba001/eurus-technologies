@@ -1,0 +1,8 @@
+#  run docker compose file 
+
+  sudo docker-compose up
+  
+# check container logs
+
+  sudo docker app 1
+

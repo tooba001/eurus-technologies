@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  fluentd:
+    image: fluent/fluentd:v1.11
+    container_name: fluentd
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    ports:
+      - "24224:24224"
+
+  app1:
+    image: nginx
+    container_name: app1
+    environment:
+      - LOGGING_SERVICE_HOST=fluentd
+      - LOGGING_SERVICE_PORT=24224
+
+  app2:
+    image: alpine
+    container_name: app2
+    environment:
+      - LOGGING_SERVICE_HOST=fluentd
+      - LOGGING_SERVICE_PORT=24224
+   
+
+
