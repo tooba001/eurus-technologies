@@ -1,0 +1,21 @@
+ 
+ # install python 
+ 
+ sudo apt update
+ sudo apt install python-is-python3
+  
+  
+ #install pip
+ 
+ sudo apt install python3-pip
+
+ 
+ #install beautiful soap
+  
+  
+ pip3 install beautifulsoup4
+
+ 
+  # Run a python script
+  
+  python aws_rss_feed.py
