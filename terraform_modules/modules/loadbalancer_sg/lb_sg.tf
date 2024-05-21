@@ -1,9 +1,6 @@
 
 
-/*module "Vpc" {
-  source          =  "/home/thinkpad/Desktop/Wordpress/modules/vpc"
-  vpc_cidr_block  =  "10.0.0.0/16" 
-}*/
+
 
 resource "aws_security_group" "alb_sg" {
   name        = "alb_sg"
