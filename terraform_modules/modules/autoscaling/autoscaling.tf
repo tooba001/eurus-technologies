@@ -1,20 +1,4 @@
 
-/*module "Vpc" {
-  source          =  "/home/thinkpad/Desktop/Wordpress/modules/vpc"
-  vpc_cidr_block  =  "10.0.0.0/16"
-  
-}
-
-
-module "loadbalancer" {
-  source              = "/home/thinkpad/Desktop/Wordpress/modules/loadbalancer"
-  target_group_name   = "wordpresss-tg"
-  load_balancer_name  = "wploadbalancer"
-  instance_type       = "t2.micro"
-  ami_id              = "ami-02bf8ce06a8ed6092"
-  launch_template_name_prefix   = "wordpress-"
-  key_pair_name       =  "tuba-kpr-1"
-}*/
 
 
 resource "aws_autoscaling_group" "wordpressautoscaling" {
