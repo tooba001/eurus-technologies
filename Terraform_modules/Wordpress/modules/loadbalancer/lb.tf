@@ -1,35 +1,4 @@
 
-
-/*module "Vpc" {
-  source          =  "/home/thinkpad/Desktop/Wordpress/modules/vpc"
-  vpc_cidr_block  =  "10.0.0.0/16"
-}
-
-
-module "lbsecuritygroups" {
-  source      = "/home/thinkpad/Desktop/Wordpress/modules/loadbalancer_sg"
-}
-
-module "websecuritygroups" {
-  source      = "/home/thinkpad/Desktop/Wordpress/modules/webserver_sg" 
-}
-
-module "databases" {
-  source              = "/home/thinkpad/Desktop/Wordpress/modules/database"
-  db_instance_type             = "db.t2.micro"
-  db_engine  =  "mysql"
-  db_engine_version =  "5.7"
-  db_name = "wordpressdb"
-  db_username = "admin"
-  db_password = "tooba2001"
-  parameter_group_name = "default.mysql5.7"
-  instance_type = "t2.micro"
-  ami_id = "ami-02bf8ce06a8ed6092"
-  key_pair_name = "tuba-kpr-1"
-}*/
-
-
-
 resource "aws_lb_target_group" "wptargetgroup" {
   name     = var.target_group_name
   port     = 80
