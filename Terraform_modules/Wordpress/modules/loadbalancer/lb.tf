@@ -43,8 +43,8 @@ data "template_file" "webserveruser_data" {
 
    vars = {
     rds_endpoint = var.rds_endpoint
+    wp_db_password = var.wp_db_password
   }
-
 
 }
 
