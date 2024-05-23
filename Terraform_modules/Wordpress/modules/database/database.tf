@@ -30,6 +30,9 @@ data "template_file" "dbuser_data" {
 
   vars = {
    rds_endpoint = aws_db_instance.wordpressdb.endpoint
+   db_username  = var.db_username
+   db_password  = var.db_password
+   wp_db_password = var.wp_db_password
   }
 
 }
