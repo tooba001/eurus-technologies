@@ -6,8 +6,8 @@ sudo yum install mysql-community-server -y
 sudo systemctl start mysqld
 echo "${rds_endpoint}" >> test.txt 
 cat test.txt
-sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -ptooba2001
-sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -ptooba2001 -e "CREATE DATABASE wordpress;"
-sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -ptooba2001 -e "CREATE USER 'wpuser'@'%' IDENTIFIED BY 'green200#Tooba';"
-sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -ptooba2001 -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';"
-sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -ptooba2001 -e "FLUSH PRIVILEGES;"
+sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -p${db_password}
+sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -p${db_password} -e "CREATE DATABASE wordpress;"
+sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -p${db_password} -e "CREATE USER 'wpuser'@'%' IDENTIFIED BY '${wp_db_password}';"
+sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -p${db_password} -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';"
+sudo mysql -h "$(awk -F: '{print $1}' <<< "${rds_endpoint}")" -P 3306 -u admin -p${db_password} -e "FLUSH PRIVILEGES;"
