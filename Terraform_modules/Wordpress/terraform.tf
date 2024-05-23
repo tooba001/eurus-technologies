@@ -1,31 +1,31 @@
 module "Vpc" {
-  source          =  "/home/thinkpad/Desktop/Wordpress/modules/vpc"
+  source          =  "./modules/vpc"
   vpc_cidr_block  =  "10.0.0.0/16"
 
 }
 
    
 module "lbsecuritygroups" {
-  source      = "/home/thinkpad/Desktop/Wordpress/modules/loadbalancer_sg" 
+  source      = "./modules/loadbalancer_sg" 
   vpc_id      =  module.Vpc.vpc_id
   lb_ingress_rules = local.lb_ingress_rules
   lb_egress_rules  = local.lb_egress_rules
 
 }
 module "dbsecuritygroups" {
-  source      = "/home/thinkpad/Desktop/Wordpress/modules/db_sg" 
+  source      = "./modules/db_sg" 
   vpc_id      = module.Vpc.vpc_id
   db_ingress_rules = local.db_ingress_rules
 
   
 }
 module "websecuritygroups" {
-  source      = "/home/thinkpad/Desktop/Wordpress/modules/webserver_sg" 
+  source      = "./modules/webserver_sg" 
   vpc_id      = module.Vpc.vpc_id
   web_ingress_rules = local.web_ingress_rules
 }
 module "databases" {
-  source              = "/home/thinkpad/Desktop/Wordpress/modules/database"
+  source              = "./modules/database"
   db_instance_type             = var.db_instance_type
   db_engine  =  var.db_engine
   db_engine_version =  var.db_engine_version
@@ -40,6 +40,7 @@ module "databases" {
   vpc_security_group_ids = [module.dbsecuritygroups.rds_securitygroup_id]
   subnet_ids = [module.Vpc.private_subnet_id_1, module.Vpc.private_subnet_id_2]
   security_groups = [module.websecuritygroups.webserver_securitygroup_id]
+  wp_db_password = var.wp_db_password
   
 }
 module "LoadBalancer" {
@@ -59,6 +60,8 @@ module "LoadBalancer" {
  rds_endpoint = module.databases.rds_endpoint
  security_group = [module.websecuritygroups.webserver_securitygroup_id]
  subnet_id                   = module.Vpc.public_subnet_id_1 
+ db_password = var.db_password
+ wp_db_password = var.wp_db_password
 }
 
 
