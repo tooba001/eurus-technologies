@@ -6,6 +6,7 @@ locals {
       from_port      = 3306
       to_port        = 3306
       protocol       = "tcp"
+      cidr_blocks    =  [] 
       security_groups = [module.websecuritygroups.webserver_securitygroup_id]
     }
   }
@@ -41,7 +42,16 @@ locals {
       from_port     = 80
       to_port       = 80
       protocol      = "tcp"
+      cidr_blocks   = [] 
       security_groups = [module.lbsecuritygroups.lb_securitygroup_id]
     }
   }
-}
+  ssh = {
+      description   = "Allow SSH traffic"
+      from_port     =  22
+      to_port       =  22
+      protocol      =  "tcp"
+      cidr_blocks   = ["0.0.0.0/0"]
+      security_groups = [] 
+    }
+  }
