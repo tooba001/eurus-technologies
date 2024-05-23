@@ -111,3 +111,9 @@ variable "webserver_user_data_template" {
 }
 
 
+
+variable "wp_db_password" {
+  description = "wordpress Database password"
+  type        = string
+  sensitive   = true  # Mark the variable as sensitive
+}
