@@ -59,3 +59,15 @@ variable "security_group" {
 variable "subnet_id" {
   type = string
 }   
+
+variable "db_password" {
+  description = "Database password"
+  type        = string
+  sensitive   = true  # Mark the variable as sensitive
+}
+
+variable "wp_db_password" {
+  description = "wordpress Database password"
+  type        = string
+  sensitive   = true  # Mark the variable as sensitive
+}
