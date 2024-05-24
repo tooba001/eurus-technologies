@@ -48,22 +48,12 @@ module "LoadBalancer" {
   vpc_id   = module.Vpc.vpc_id
   target_group_name   = var.target_group_name
   load_balancer_name  = var.load_balancer_name
-  instance_type       = var.instance_type
-  ami_id              = var.ami_id
-  launch_template_name_prefix   = var.launch_template_name_prefix
-  key_pair_name       =  var.key_pair_name
   security_groups     = [module.lbsecuritygroups.lb_securitygroup_id]
   subnets            = [
     module.Vpc.public_subnet_id_1,
     module.Vpc.public_subnet_id_2
  ]
- rds_endpoint = module.databases.rds_endpoint
- security_group = [module.websecuritygroups.webserver_securitygroup_id]
- subnet_id                   = module.Vpc.public_subnet_id_1 
- db_password = var.db_password
- wp_db_password = var.wp_db_password
 }
-
 
 module "Autoscalings" {
   source                     = "./modules/autoscaling"
@@ -72,7 +62,16 @@ module "Autoscalings" {
   max_size                   =       3
   desired_capacity           =       2
   health_check_type          =      "EC2"
-  loadbalancer_launch_template_id = module.LoadBalancer.launch_template_id
+  ami_id              = var.ami_id
+  instance_type       = var.instance_type
+  key_pair_name       =  var.key_pair_name
+  launch_template_name_prefix   = var.launch_template_name_prefix
   target_group_arns_id = module.LoadBalancer.target_group_arns     
   vpc_zone_identifier  = [module.Vpc.public_subnet_id_1, module.Vpc.public_subnet_id_2]
+  rds_endpoint = module.databases.rds_endpoint
+  wp_db_password = var.wp_db_password
+  subnet_id                   = module.Vpc.public_subnet_id_1 
+  security_groups = [module.websecuritygroups.webserver_securitygroup_id]
 }
+
+
