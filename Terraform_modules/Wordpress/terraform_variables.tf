@@ -84,7 +84,7 @@ variable "key_pair_name" {
 variable "db_user_data_template" {
   description = "Path to the web server user data template file"
   type        = string
-  default     = "/home/thinkpad/Desktop/Wordpress/templates/rds_user_data.tpl"  # Specify the path relative to the root directory
+  default     = "templates/rds_user_data.tpl"  # Specify the path relative to the root directory
 }
 
 variable "target_group_name" {
@@ -107,7 +107,7 @@ variable "launch_template_name_prefix" {
 variable "webserver_user_data_template" {
   description = "Path to the web server user data template file"
   type        = string
-  default     = "/home/thinkpad/Desktop/Wordpress/templates/webserver_user_data.tpl"  # Specify the path relative to the root directory
+  default     = "templates/webserver_user_data.tpl"  # Specify the path relative to the root directory
 }
 
 
