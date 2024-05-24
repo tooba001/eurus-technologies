@@ -1,25 +1,40 @@
 
-/*module "Vpc" {
-  source          =  "/home/thinkpad/Desktop/Wordpress/modules/vpc"
-  vpc_cidr_block  =  "10.0.0.0/16"
-  
+data "template_file" "webserveruser_data" {
+  template = file(var.webserver_user_data_template)
+
+   vars = {
+    rds_endpoint = var.rds_endpoint
+    wp_db_password = var.wp_db_password
+  }
+
 }
 
+resource "aws_launch_template" "wordpresslaunchtemplate" {
+  name_prefix   = var.launch_template_name_prefix
+  image_id      = var.ami_id  # Replace with your AMI ID
+  instance_type = var.instance_type
+  key_name      = var.key_pair_name
+ 
 
-module "loadbalancer" {
-  source              = "/home/thinkpad/Desktop/Wordpress/modules/loadbalancer"
-  target_group_name   = "wordpresss-tg"
-  load_balancer_name  = "wploadbalancer"
-  instance_type       = "t2.micro"
-  ami_id              = "ami-02bf8ce06a8ed6092"
-  launch_template_name_prefix   = "wordpress-"
-  key_pair_name       =  "tuba-kpr-1"
-}*/
+  # Specify the VPC configuration
+  network_interfaces {
+    associate_public_ip_address = true
+    subnet_id                   =  var.subnet_id # Choose your subnet ID
+    security_groups = var.security_groups
+  }
+
+
+  user_data =  base64encode(data.template_file.webserveruser_data.rendered)
+              
+    tags = {
+    Name = "terraform-launch-template"
+  }        
+}
 
 
 resource "aws_autoscaling_group" "wordpressautoscaling" {
   launch_template {
-    id      =  var.loadbalancer_launch_template_id
+    id      =  aws_launch_template.wordpresslaunchtemplate.id
     version = "$Latest"
   }
 
