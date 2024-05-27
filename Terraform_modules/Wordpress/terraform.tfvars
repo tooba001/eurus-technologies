@@ -16,3 +16,13 @@ key_pair_name = "tuba-kpr"
 target_group_name = "wordpresss-tg"
 load_balancer_name =  "wploadbalancer"
 launch_template_name_prefix =  "wordpress-"
+lb_ingress_rules = {
+  http = {
+    description = "Allow HTTP traffic"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
