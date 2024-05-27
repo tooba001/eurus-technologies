@@ -7,7 +7,7 @@ locals {
       to_port        = 3306
       protocol       = "tcp"
       cidr_blocks    = [] 
-      security_groups = [module.websecuritygroups.webserver_securitygroup_id]
+      security_groups = [module.securitygroups.webserver_securitygroup_id]
     }
   }
 }
