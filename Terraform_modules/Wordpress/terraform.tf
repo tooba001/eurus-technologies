@@ -10,13 +10,9 @@ module "securitygroups" {
   lb_ingress_rules = local.lb_ingress_rules
   lb_egress_rules  = local.lb_egress_rules
   db_ingress_rules = local.db_ingress_rules
-}
-
-module "websecuritygroups" {
-  source      = "./modules/webserver_sg" 
-  vpc_id      = module.Vpc.vpc_id
   web_ingress_rules = local.web_ingress_rules
 }
+
 module "databases" {
   source              = "./modules/database"
   db_instance_type             = var.db_instance_type
@@ -32,7 +28,7 @@ module "databases" {
   subnet_id     = module.Vpc.public_subnet_id_1 
   vpc_security_group_ids = [module.securitygroups.rds_securitygroup_id]
   subnet_ids = [module.Vpc.private_subnet_id_1, module.Vpc.private_subnet_id_2]
-  security_groups = [module.websecuritygroups.webserver_securitygroup_id]
+  security_groups = [module.securitygroups.webserver_securitygroup_id]
   wp_db_password = var.wp_db_password
   
 }
@@ -64,7 +60,7 @@ module "Autoscalings" {
   rds_endpoint = module.databases.rds_endpoint
   wp_db_password = var.wp_db_password
   subnet_id                   = module.Vpc.public_subnet_id_1 
-  security_groups = [module.websecuritygroups.webserver_securitygroup_id]
+  security_groups = [module.securitygroups.webserver_securitygroup_id]
 }
 
 
