@@ -1,7 +1,13 @@
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
   type        = string
+
+  validation {
+    condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", var.vpc_cidr_block)) && can(cidrsubnet(var.vpc_cidr_block, 0, 0))
+    error_message = "The VPC CIDR block must be a valid CIDR block, such as 10.0.0.0/16."
+  }
 }
+
 
 variable "auto_scaling_group_name" {
   description = "Name of the Auto Scaling group"
@@ -116,4 +122,14 @@ variable "wp_db_password" {
   description = "wordpress Database password"
   type        = string
   sensitive   = true  # Mark the variable as sensitive
+}
+
+variable "lb_ingress_rules" {
+  type = map(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
 }
