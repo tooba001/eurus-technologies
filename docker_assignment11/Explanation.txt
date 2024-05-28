@@ -1,0 +1,4 @@
+
+# using cat command
+cat /etc/hosts
+

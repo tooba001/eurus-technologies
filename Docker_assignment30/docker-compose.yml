@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: mongo:3
+    container_name: mongodbsss
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tooba
+      MONGO_INITDB_ROOT_PASSWORD: tooba2001
+
+  web:
+    image: node:6.9.1
+    container_name: nodejs_webappsss
+    build:
+        context: .
+    volumes:
+      - .:/work
+    working_dir: /work
+    environment:
+      MONGO_IP: db
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    command: ["sh", "-c", "npm start" ]
+   
+  test:
+    image: curlimages/curl:latest
+    container_name: curl_testssss
+    entrypoint: ["curl", "-v", "http://web:3000"]
+    depends_on:
+      - web
+

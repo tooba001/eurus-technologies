@@ -1,0 +1,9 @@
+# build docker image
+
+  sudo docker build -t brussels-time .
+  
+# run container
+
+  sudo docker run --rm brussels-time
+
+

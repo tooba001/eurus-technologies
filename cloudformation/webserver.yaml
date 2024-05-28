@@ -1,0 +1,136 @@
+Mappings:  
+  RegionToAMI:
+    us-east-1:
+      AMI: ami-0f403e3180720dd7e
+  InstanceTypeMap:
+    t2.micro:
+      Type: t2.micro
+  KeyPairRegionMap:
+    us-east-1:
+      KeyName: tuba-kpr
+Parameters:
+  Myvpc:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID where resources should be created
+    Default: vpc-12345678
+  RdsEndpoint:
+    Type: String
+    Description: RDS Endpoint Address
+    Default: rds-endpoint-address
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet::Id
+    Description: public subnet a  
+    Default:  public-subnet-a-id
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet::Id
+    Description: public subnet b  
+    Default: public-subnet-b-id
+  PrivateSubnetA:    
+    Type: AWS::EC2::Subnet::Id
+    Description: private subnet a   
+    Default: private-subnet-a-id
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet::Id
+    Description: private subnet b 
+    Default: private-subnet-b-id
+  AMIParameter:
+    Type:  AWS::SSM::Parameter::Value<String>
+    Default: ami-0f403e3180720dd7e
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+  KeyNameParameter:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of the key pair to use for EC2 instances
+    Default: tuba-kpr
+  webservergroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Web server group
+    Default: myEC2SecurityGroup 
+  loadbalancersecuritygroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: load security group
+    Default: mylbSecurityGroup 
+Resources:
+ # Launch Configuration
+  WebLaunchConfig: 
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !FindInMap [RegionToAMI, us-east-1, AMI]  # Use the appropriate WordPress AMI
+      InstanceType: !FindInMap [InstanceTypeMap, t2.micro, Type] # Set as needed
+      SecurityGroups:
+        -  !Ref webservergroup
+      KeyName: !FindInMap [KeyPairRegionMap, !Ref "AWS::Region", KeyName] # Update with your SSH key
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install -y httpd
+          sudo systemctl start httpd
+          sudo systemctl enable httpd
+          sudo yum install -y httpd php php-common php-gd php-mysqli
+          sudo systemctl restart httpd
+          sudo wget https://wordpress.org/latest.zip
+          sudo unzip latest.zip
+          sudo cp -r wordpress/* /var/www/html
+          sudo chown apache:apache -R /var/www/html
+          sudo cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+          sudo sed -i "s/database_name_here/wordpress/" /var/www/html/wp-config.php
+          sudo sed -i "s/username_here/wpuser/" /var/www/html/wp-config.php
+          sudo sed -i "s/password_here/green200#Tooba/" /var/www/html/wp-config.php
+          sudo sed -i "s/localhost/${RdsEndpoint}/" /var/www/html/wp-config.php
+          sudo systemctl restart httpd 
+ #Target Group
+  WPTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: WPTargetGroup
+      VpcId: !Ref Myvpc
+      Protocol: HTTP
+      Port: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: 80
+# Load Balancer  
+  WPLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: WPLoadBalancer
+      Subnets:
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetB
+      SecurityGroups:
+        - !Ref loadbalancersecuritygroup
+      Scheme: internet-facing
+      Type: application
+ #Load Balancer Listener
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+       DefaultActions:
+         - TargetGroupArn: !Ref WPTargetGroup
+           Type: forward
+       LoadBalancerArn: !Ref WPLoadBalancer
+       Port: 80
+       Protocol: HTTP
+#Autoscaling Group
+  WebServerGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones: 
+         - Fn::Select:
+             - 0
+             - Fn::GetAZs: !Ref "AWS::Region"
+         - Fn::Select:
+             - 1
+             - Fn::GetAZs: !Ref "AWS::Region"
+      LaunchConfigurationName: !Ref WebLaunchConfig
+      MinSize: '2'
+      MaxSize: '4'
+      DesiredCapacity: '2'
+      TargetGroupARNs:   # Use TargetGroupARNs instead of LoadBalancerName
+        - !Ref WPTargetGroup 
+      HealthCheckType: EC2
+      HealthCheckGracePeriod: '300'
+      VPCZoneIdentifier: 
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetB

@@ -1,0 +1,2 @@
+To create the smallest data-only container, I can use a minimalist base image such as busybox or alpine. These images are lightweight and provide a minimal filesystem, making them suitable for simple data storage purposes.
+

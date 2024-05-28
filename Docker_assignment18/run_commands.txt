@@ -1,0 +1,15 @@
+ # check images on host 
+ 
+   sudo  docker images -a
+   
+ # run a shell in a docker container but include the docker socket as a volume
+ 
+ sudo  docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock docker sh
+ 
+ # check images inside a container
+  
+  sudo docker images -a
+  
+  #Explanation
+  
+   In second command,  -v /var/run/docker.sock:/var/run/docker.sock: This option mounts the Docker socket (/var/run/docker.sock) from the host into the container at the same path. This allows the container to communicate with the Docker engine running on the host.
