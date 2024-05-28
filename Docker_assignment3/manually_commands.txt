@@ -1,5 +1,0 @@
-#build image
-docker docker build -t docker-with-docker .
-#create container
-sudo docker run -t -d --name=AWSCLIS -it aws-cmnds  sh
-

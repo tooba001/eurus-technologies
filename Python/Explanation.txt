@@ -1,3 +1,0 @@
- # Prevent duplicates
- 
- Avoid Duplicates: Each new feed entry from new_feeds is checked against existing_feeds. If that entry is not present in existing_feeds, then it is added to existing_feeds. This prevents duplicates.

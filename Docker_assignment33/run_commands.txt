@@ -1,9 +1,0 @@
- # build images
- 
-  sudo  docker build -t echo-container -f Dockerfile .
-  sudo  docker build -t sed-container -f Dockerfile.sd .
-  
- #pipeline command
- 
-  sudo docker run echo-container sh -c "echo 'change this word to'" | \
-  sudo docker run  -i sed-container sed 's/this/that/g'

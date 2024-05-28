@@ -1,7 +1,0 @@
-version: '3'
-services:
-  my-container:
-    image: my-image
-    deploy:
-      replicas: 1
-

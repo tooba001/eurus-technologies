@@ -1,9 +1,0 @@
-#build image
-
-sudo docker build -t testenv1 .
-
-#create container
-sudo docker run --rm -e ITEM=5 testenv1
-
-#output
-5

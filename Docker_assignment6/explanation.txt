@@ -1,3 +1,0 @@
- Resolved error 1:  Entry point instruction has semicolon. i removed semicolon in entry point instruction.
-
-Resolved error 2:   When using the ENTRYPOINT or CMD instruction in a Dockerfile, the environment variables defined with the ENV instruction are not evaluated in the shell command unless you use shell form (sh -c). So, ${ITEM} will not be expanded to its value. 

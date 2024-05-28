@@ -1,6 +1,0 @@
-#build image
-sudo docker build -t docker_image .
-
-# share a docker daemon
-sudo docker run -itd --restart unless-stopped -v /var/run/docker.sock:/var/run/docker.sock docker_image
-

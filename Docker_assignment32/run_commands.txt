@@ -1,9 +1,0 @@
-# build an image
-
-sudo docker build -t ecs-cli .
-
-# Run ecs-cli commands
-
- sudo docker run --rm -it -v ~/.aws:/root/.aws -v ~/.ecs:/root/.ecs ecs-cli license
- sudo  docker run --rm -it -v ~/.aws:/root/.aws -v ~/.ecs:/root/.ecs ecs-cli configure --cluster ecs-cli-demo
-

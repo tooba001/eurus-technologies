@@ -1,9 +1,0 @@
-# Using command
-
- docker image inspect --format='{{.ID}} created: {{.Created}}' alpine
- 
-# Explanation:
-  
- This command uses the docker image inspect command with the --format option to specify the output format. It retrieves the image ID ({{.ID}}) and creation date ({{.Created}}) for the Alpine image.
- 
-

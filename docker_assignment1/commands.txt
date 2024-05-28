@@ -1,3 +1,0 @@
-
-# Run a docker compose configuration file
-docker-compose -f mongodb_container.yml up -d

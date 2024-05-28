@@ -1,2 +1,0 @@
-# Bring an nginx container, and mount your own directory of statics file, and make it available at port 80
-sudo docker run -d -p 8080:80 -v ~/docker1.yml/static-files:/usr/share/nginx/html 
