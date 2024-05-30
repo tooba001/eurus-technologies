@@ -2,76 +2,60 @@ variable "vpc_id" {
   type = string
 } 
 
-variable "lb_ingress_rules" {
-  description = "Map of ingress rules for the load balancer security group"
+variable "ingress_rules" {
+  description = "Map of ingress rules for the  security group"
   type        = map(object({
     description = string
     from_port   = number
     to_port     = number
     protocol    = string
-    cidr_blocks = list(string)
+    cidr_blocks = optional(list(string), [])
+    security_groups = optional(list(string), [])
   }))
 
 }
 
-variable "lb_egress_rules" {
+
+variable "egress_rules" {
   description = "Map of egress rules for the security group"
   type        = map(object({
     description = string
     from_port   = number
     to_port     = number
     protocol    = string
-    cidr_blocks = list(string)
+    cidr_blocks = optional(list(string), [])
+    security_groups = optional(list(string), [])
   }))
 
 }
 
-variable "db_ingress_rules" {
-  description = "Map of ingress rules for the rds  security group"
-  type        = map(object({
-    description =     string
-    from_port   =     number
-    to_port     =     number
-    protocol    =     string
-    cidr_blocks =     list(string)
-    security_groups = list(string)
-  }))
+variable "security_group_name" {
+  type = string
 }
 
-variable "db_egress_rules" {
-  description = "Map of egress rules for the security group"
-  type        = map(object({
-    description = string
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
-
-}
-
-variable "web_ingress_rules" {
-  description = "Map of ingress rules for the load balancer security group"
+/*variable "security_groups_config" {
+  description = "Map of security group configurations"
   type = map(object({
-    description      =     string
-    from_port        =     number
-    to_port          =     number
-    protocol         =     string
-    cidr_blocks      =     list(string)
-    security_groups  =     list(string)
+    name          = string
+    description   = string
+    ingress_rules = list(object({
+      description    = string
+      from_port      = number
+      to_port        = number
+      protocol       = string
+      cidr_blocks    = optional(list(string), [])
+      security_groups = optional(list(string), [])
+    }))
+    egress_rules = list(object({
+      description    = string
+      from_port      = number
+      to_port        = number
+      protocol       = string
+      cidr_blocks    = optional(list(string), [])
+      security_groups = optional(list(string), [])
+    }))
   }))
+}*/
 
-}
 
-variable "web_egress_rules" {
-  description = "Map of egress rules for the security group"
-  type        = map(object({
-    description = string
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
-
-}
 
