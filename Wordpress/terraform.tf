@@ -1,21 +1,36 @@
 module "Vpc" {
   source          =  "./modules/vpc"
-  vpc_cidr_block  =  "10.0.0.0/16"
+  vpc_cidr_block  =  var.vpc_cidr_block
 
 }
 
-module "securitygroups" {
-  source = "./modules/securitygroups"
-  vpc_id      =  module.Vpc.vpc_id
-  lb_ingress_rules = local.lb_ingress_rules
-  lb_egress_rules  = local.lb_egress_rules
-  db_ingress_rules = local.db_ingress_rules
-  db_egress_rules = local.db_egress_rules
-  web_ingress_rules = local.web_ingress_rules
-  web_egress_rules = local.web_egress_rules
-
+module "securitygroup_alb" {
+  source       = "./modules/securitygroups"
+  vpc_id       = module.Vpc.vpc_id
+  security_group_name = "alb-security-group"
+  ingress_rules = local.lb_ingress_rules
+  egress_rules = local.lb_egress_rules
 }
 
+
+
+
+module "securitygroup_rds" {
+  source       = "./modules/securitygroups"
+  vpc_id       = module.Vpc.vpc_id
+  security_group_name = "rds-security-group"
+  ingress_rules = local.db_ingress_rules
+  egress_rules = local.db_egress_rules
+}
+
+module "securitygroup_web" {
+  source       = "./modules/securitygroups"
+  vpc_id       = module.Vpc.vpc_id
+  security_group_name = "web-security-group"
+  ingress_rules = local.web_ingress_rules
+  egress_rules = local.web_egress_rules
+}
+  
 module "databases" {
   source              = "./modules/database"
   db_instance_type             = var.db_instance_type
@@ -29,9 +44,9 @@ module "databases" {
   ami_id = var.ami_id
   key_pair_name = var.key_pair_name
   subnet_id     = module.Vpc.public_subnet_id_1 
-  vpc_security_group_ids = [module.securitygroups.rds_securitygroup_id]
+  vpc_security_group_ids = [module.securitygroup_rds.securitygroup_id]
   subnet_ids = [module.Vpc.private_subnet_id_1, module.Vpc.private_subnet_id_2]
-  security_groups = [module.securitygroups.webserver_securitygroup_id]
+  security_groups = [module.securitygroup_web.securitygroup_id]
   wp_db_password = var.wp_db_password
   
 }
@@ -40,7 +55,7 @@ module "LoadBalancer" {
   vpc_id   = module.Vpc.vpc_id
   target_group_name   = var.target_group_name
   load_balancer_name  = var.load_balancer_name
-  security_groups     = [module.securitygroups.lb_securitygroup_id]
+  security_groups     = [module.securitygroup_alb.securitygroup_id]
   subnets            = [
     module.Vpc.public_subnet_id_1,
     module.Vpc.public_subnet_id_2
@@ -63,7 +78,7 @@ module "Autoscalings" {
   rds_endpoint = module.databases.rds_endpoint
   wp_db_password = var.wp_db_password
   subnet_id                   = module.Vpc.public_subnet_id_1 
-  security_groups = [module.securitygroups.webserver_securitygroup_id]
+  security_groups = [module.securitygroup_web.securitygroup_id]
 }
 
 
